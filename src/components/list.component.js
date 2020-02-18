@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_IEX;
+
 const Stock = props => (
     <tr>
         <td>{props.todo.name}</td>
@@ -14,21 +16,32 @@ const Stock = props => (
 export default class List extends Component {
     constructor(props) {
         super(props);
-        this.state = {stocks: []};
+        this.state = {
+            stocks: []
+        };
     }
     componentDidMount() {
-        axios.get('http://localhost:4000/todos/')
-            .then(response => {
-                this.setState({ stocks: response.data });
-            })
-            .catch(function (error){
-                console.log(error);
-            })
+        axios.get(`https://cloud.iexapis.com/stable/tops?token=${API}&symbols=aapl`).then(response => {
+            this.setState({stocks: response.data[0]})
+            console.log(response.data[0]);
+            console.log(this.state.stocks.symbol)
+        })
+
+        // axios.get('http://localhost:4000/todos/')
+        //     .then(response => {
+        //         this.setState({ stocks: response.data });
+        //     })
+        //     .catch(function (error){
+        //         console.log(error);
+        //     })
     }
     display() {
-        return this.state.stocks.map(function(currentTodo, i){
-            return <Stock todo={currentTodo} key={i} />;
+        return this.state.stocks.map(function(list, i){
+            return <Stock todo={list} key={i} />;
         })
+    }
+    display2() {
+        return this.state.stocks.symbol + " $" + this.state.stocks.lastSalePrice
     }
     render() {
         return (
@@ -43,7 +56,7 @@ export default class List extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.display() }
+                        { this.display2() }
                     </tbody>
                 </table>
             </div>
