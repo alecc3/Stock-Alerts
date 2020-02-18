@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const myAPI = process.env.REACT_APP_ALPHA_API;
+
 export default class Create extends Component {
     constructor(props){
         super(props);
@@ -10,6 +12,12 @@ export default class Create extends Component {
             price: '',
             buy: '',
             sell: '',
+            suggestions: {
+                name: '',
+                ticker: '',
+                type: '',
+                region: '',
+            },
             done: false
         }
         this.onChangeName = this.onChangeName.bind(this);
@@ -21,6 +29,21 @@ export default class Create extends Component {
         this.setState({
             name: e.target.value
         });
+
+        if (this.state.name.length > 3){
+            axios.get(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords= ${this.state.name} &apikey= ${myAPI}`)
+            .then(res => {
+                const data = res.data.bestMatches;
+                for (var i=0;i<5;i++){
+                    this.state.suggestions[i] = data[i];
+                }
+                console.log(this.state.suggestions[0]);
+                console.log(this.state.suggestions[1]["1. symbol"]);
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+        }
     }
     onChangeBuy(e) {
         this.setState({
@@ -34,7 +57,7 @@ export default class Create extends Component {
     }
     onSubmit(e) {
         e.preventDefault(); // ensure that the default HTML form submit behaviour is prevented
-        
+
         console.log(`Form submitted:`);
         console.log(`Name: ${this.state.name}`);
         console.log(`Buy: ${this.state.buy}`);
@@ -47,8 +70,8 @@ export default class Create extends Component {
         }
 
         //add to mongoDB
-        axios.post('http://localhost:4000/todos/add', alert)
-        .then(res => console.log(res.data));
+        // axios.post('http://localhost:4000/todos/add', alert)
+        // .then(res => console.log(res.data));
 
         this.setState({
             name: '',
