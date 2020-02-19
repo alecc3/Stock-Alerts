@@ -5,11 +5,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const stockRoutes = express.Router();
 const PORT = 4000;
+const API = process.env.REACT_APP_IEX;
 
 let Stonk = require('./stonk.model');
 
 app.use(cors());
 app.use(bodyParser.json());
+
+var stocks = [];
 
 mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
 const connection = mongoose.connection;
@@ -47,6 +50,8 @@ stockRoutes.route('/add').post(function(req, res) {
             res.status(400).send('adding failed');
         });
 });
+
+// list
 
 app.use('/todos',stockRoutes);
 

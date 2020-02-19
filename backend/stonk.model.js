@@ -5,12 +5,9 @@ let Stonk = new Schema({
     name: {
         type: String
     },
-    buy: {
+    price: {
         type: String
-    },
-    sell: {
-        type: String
-    },
+    }
 });
 
 module.exports = mongoose.model('Stock', Stonk);

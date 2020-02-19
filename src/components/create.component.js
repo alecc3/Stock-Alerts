@@ -32,8 +32,6 @@ export default class Create extends Component {
             name: '',
             ticker: '',
             price: '',
-            buy: '',
-            sell: '',
             suggestions: [],
             done: false
         }
@@ -89,8 +87,7 @@ export default class Create extends Component {
         
         const alert = {
             name: this.state.name,
-            buy: this.state.buy,
-            sell: this.state.sell
+            price: this.state.price
         }
 
         //add to mongoDB
