@@ -13,6 +13,7 @@ const Stock = props => (
 )
 
 var zone = Intl.DateTimeFormat().resolvedOptions().timeZone
+var open = false
 
 export default class List extends Component {
     constructor(props) {
@@ -23,20 +24,33 @@ export default class List extends Component {
         };
     }
     componentDidMount() {
-        axios.get(`https://cloud.iexapis.com/stable/tops?token=${API}&symbols=aapl,fb,amzn,googl`).then(response => {
-            var res = "$" + response.data[0].symbol + " - " + "Apple"
-            var price = "$" + response.data[0].lastSalePrice.toFixed(2)
-            this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-            var res = "$" + response.data[1].symbol + " - " + "Facebook"
-            var price = "$" + response.data[1].lastSalePrice.toFixed(2)
-            this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-            var res = "$" + response.data[2].symbol + " - " + "Amazon"
-            var price = "$" + response.data[2].lastSalePrice.toFixed(2)
-            this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-            var res = "$" + response.data[3].symbol + " - " + "Alphabet"
-            var price = "$" + response.data[3].lastSalePrice.toFixed(2)
+        axios.get(`https://cloud.iexapis.com/stable/stock/aapl/quote/?token=${API}`)
+        .then(response=>{
+            console.log(response.data)
+            var res = "$" + response.data.symbol + " - " + "Apple"
+            var price = "$" + response.data.latestPrice.toFixed(2)
+            open = response.data.isUSMarketOpen
             this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
         })
+        .catch(err => {
+            console.log(err)
+        })
+        // `https://cloud.iexapis.com/stable/tops?token=${API}&symbols=aapl,fb,amzn,googl`
+        // .then(response => {
+        //     console.log(response.data)
+            // var res = "$" + response.data[0].symbol + " - " + "Apple"
+            // var price = "$" + response.data[0].lastSalePrice.toFixed(2)
+            // this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
+        //     var res = "$" + response.data[1].symbol + " - " + "Facebook"
+        //     var price = "$" + response.data[1].lastSalePrice.toFixed(2)
+        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
+        //     var res = "$" + response.data[2].symbol + " - " + "Amazon"
+        //     var price = "$" + response.data[2].lastSalePrice.toFixed(2)
+        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
+        //     var res = "$" + response.data[3].symbol + " - " + "Alphabet"
+        //     var price = "$" + response.data[3].lastSalePrice.toFixed(2)
+        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
+        // })
 
         // axios.get('http://localhost:4000/todos/')
         //     .then(response => {
@@ -52,19 +66,15 @@ export default class List extends Component {
         })
     }
     marketStatus(){
-        var date = new Date();
-        let hours = date.getHours();
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        if (hours > 1 && ampm == "pm"){
-            return <p>Market is Closed</p>
-        }
-        return <p>Market is Open</p>
+        var res;
+        res = open ? "Open" : "Closed"
+        return res
     }
     render() {
         return (
             <div>
                 Time - <Clock format={'h:mm:ss'} ticking={true} timezone={zone}/> {new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1]}
-                {this.marketStatus()}
+                <p>Market is {this.marketStatus()}</p>
                 <h3>Alerts</h3>
                 <table className="table table-striped" style={{ marginTop: 20 }} >
                     <thead>
