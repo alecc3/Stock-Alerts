@@ -14,9 +14,9 @@ class App extends Component {
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" target="_blank">
-              <p>IMG</p>
+              <p>S</p>
             </a>
-            <Link to="/" className="navbar-brand">MERN</Link>
+            <Link to="/" className="navbar-brand">Stock Alerts</Link>
             <div className="collpase navbar-collapse">
               <ul className="navbar-nav mr-auto">
               <li className="navbar-item">
@@ -25,9 +25,9 @@ class App extends Component {
               <li className="navbar-item">
                   <Link to="/create" className="nav-link">Create</Link>
               </li>
-              <li className="navbar-item">
+              {/* <li className="navbar-item">
                   <Link to="/edit/:id" className="nav-link">Edit</Link>
-              </li>
+              </li> */}
               </ul>
             </div>
           </nav>
