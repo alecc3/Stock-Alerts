@@ -2,8 +2,16 @@ UNDER CONSTRUCTION
 
 // TO DO :
 Integrate Twilio API
-Dynamically generate tickers and prices from DB
+
+Dynamic stock generation
+
+Ticker autocomplete
+
+DB deletion
+
 IEX Cloud API vs Node.js web scrape?
+
 Graphs
+
 UI/UX components
 
