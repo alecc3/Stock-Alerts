@@ -3,7 +3,7 @@
 
 **UNDER CONSTRUCTION**
 
-**// TO DO :**
+**// TO DO**
 
 Integrate Twilio API
 
