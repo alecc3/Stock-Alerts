@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { sizing } from '@material-ui/system';
-import Sync from './synch';
+import DynamicSelect from './DynamicSelect';
 
 const myAPI = process.env.REACT_APP_ALPHA_API;
 
@@ -25,6 +25,8 @@ function Stock(ticker, name, type, region){
     this.region = region;
 }
 
+let suggestions = new Set();
+
 export default class Create extends Component {
     constructor(props){
         super(props);
@@ -43,15 +45,14 @@ export default class Create extends Component {
         axios.get(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords= ${this.state.name} &apikey= ${myAPI}`)
             .then(res => {
                 const data = res.data.bestMatches;
-                for (var i=0;i<data.length;i++){
+                for (var i=0;i<4;i++){
                     var add = new Stock(data[i]["1. symbol"],data[i]["2. name"],data[i]["3. type"],data[i]["4. region"])
                     this.state.suggestions.push(add);
                 }
-                
-                this.state.suggestions.forEach(item=>{
-                var x = item.name;
-                console.log(x);
-                })
+                // for (var i=0;i<4;i++){
+                //     console.log(this.state.suggestions[i].ticker);
+                // }
+
             })
             .catch(function (error){
                 console.log(error);
@@ -128,7 +129,8 @@ export default class Create extends Component {
                 <div className="form-group">
                     <input type="submit" value="Add" className="btn btn-primary" />
                 </div>
-                </form>
+            </form>
+            
             </div>
         )
     }
