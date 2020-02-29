@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { sizing } from '@material-ui/system';
-import DynamicSelect from './DynamicSelect';
 
 const myAPI = process.env.REACT_APP_ALPHA_API;
 

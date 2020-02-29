@@ -10,7 +10,6 @@ const Stock = props => (
     </tr>
 )
 
-
 export default class List extends Component {
     constructor(props) {
         super(props);

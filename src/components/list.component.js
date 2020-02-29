@@ -9,6 +9,7 @@ const Stock = props => (
     <tr>
         <td>{props.tickers}</td>
         <td>{props.prices}</td>
+        <td><button type="button" class="btn btn-dark">Set</button></td>
     </tr>
 )
 
@@ -30,7 +31,7 @@ export default class List extends Component {
             console.log(response.data)
             for (var s in response.data){
                 console.log(response.data[s]["quote"])
-                var symbol = '$ ' + response.data[s]["quote"]["symbol"]
+                var symbol = '$ - ' + response.data[s]["quote"]["symbol"]
                 var price = '$ ' + response.data[s]["quote"]["latestPrice"]
                 this.setState({stocks: [...this.state.stocks, symbol], prices: [...this.state.prices, price]})
                 open = response.data.isUSMarketOpen
@@ -67,6 +68,7 @@ export default class List extends Component {
                         <tr>
                             <th>Ticker</th>
                             <th>Current Price</th>
+                            <th>Alert</th>
                         </tr>
                     </thead>
                     <tbody>
