@@ -15,6 +15,8 @@ const Stock = props => (
 var zone = Intl.DateTimeFormat().resolvedOptions().timeZone
 var open = false
 
+var FAANG = '?symbols=fb,aapl,amzn,nflx,goog'
+
 export default class List extends Component {
     constructor(props) {
         super(props);
@@ -24,34 +26,18 @@ export default class List extends Component {
         };
     }
     componentDidMount() {
-        axios.get(`https://cloud.iexapis.com/stable/stock/aapl/quote/?token=${API}`)
-        .then(response=>{
+        axios.get(`https://cloud.iexapis.com/stable/stock/market/batch${FAANG}&types=quote&filter=symbol,latestPrice,isUSMarketOpen&token=${API}`).then(response =>{
             console.log(response.data)
-            var res = "$" + response.data.symbol + " - " + "Apple"
-            var price = "$" + response.data.latestPrice.toFixed(2)
-            open = response.data.isUSMarketOpen
-            this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
+            for (var s in response.data){
+                console.log(response.data[s]["quote"])
+                var symbol = '$ ' + response.data[s]["quote"]["symbol"]
+                var price = '$ ' + response.data[s]["quote"]["latestPrice"]
+                this.setState({stocks: [...this.state.stocks, symbol], prices: [...this.state.prices, price]})
+                open = response.data.isUSMarketOpen
+            }
         })
-        .catch(err => {
-            console.log(err)
-        })
-        // `https://cloud.iexapis.com/stable/tops?token=${API}&symbols=aapl,fb,amzn,googl`
-        // .then(response => {
-        //     console.log(response.data)
-            // var res = "$" + response.data[0].symbol + " - " + "Apple"
-            // var price = "$" + response.data[0].lastSalePrice.toFixed(2)
-            // this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-        //     var res = "$" + response.data[1].symbol + " - " + "Facebook"
-        //     var price = "$" + response.data[1].lastSalePrice.toFixed(2)
-        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-        //     var res = "$" + response.data[2].symbol + " - " + "Amazon"
-        //     var price = "$" + response.data[2].lastSalePrice.toFixed(2)
-        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-        //     var res = "$" + response.data[3].symbol + " - " + "Alphabet"
-        //     var price = "$" + response.data[3].lastSalePrice.toFixed(2)
-        //     this.setState({stocks: [...this.state.stocks, res], prices: [...this.state.prices, price]})
-        // })
-
+        
+        // # add to DB
         // axios.get('http://localhost:4000/todos/')
         //     .then(response => {
         //         this.setState({ stocks: response.data });
